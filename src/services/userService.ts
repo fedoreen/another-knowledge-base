@@ -1,6 +1,7 @@
 import { PrismaClient, UserRole } from '@prisma/client';
 import { AuthUtils } from '@/utils';
 import { CreateUserInput, UpdateUserInput, UserResponse, JWTPayload, LoginData, AuthResponse } from '@/types';
+import { ERROR_MESSAGES } from '../constants/errors';
 
 const prisma = new PrismaClient();
 
@@ -14,7 +15,7 @@ export class UserService {
     });
 
     if (existingUser) {
-      throw new Error('User with this email already exists');
+      throw new Error(ERROR_MESSAGES.USER_ALREADY_EXISTS);
     }
 
     const passwordHash = await AuthUtils.hashPassword(password);
@@ -49,13 +50,13 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error('Invalid email or password');
+      throw new Error(ERROR_MESSAGES.INVALID_CREDENTIALS);
     }
 
     // Verify password
     const isPasswordValid = await AuthUtils.comparePassword(password, user.passwordHash);
     if (!isPasswordValid) {
-      throw new Error('Invalid email or password');
+      throw new Error(ERROR_MESSAGES.INVALID_CREDENTIALS);
     }
 
     // Generate token

@@ -10,6 +10,7 @@ export const ERROR_MESSAGES = {
   // User related
   USER_NOT_FOUND: 'User not found',
   INVALID_CREDENTIALS: 'Invalid email or password',
+  USER_ALREADY_EXISTS: 'User with this email already exists',
   
   // Article related
   ARTICLE_NOT_FOUND: 'Article not found',

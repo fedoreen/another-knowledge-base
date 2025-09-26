@@ -1,6 +1,6 @@
 import { User, Prisma } from '@prisma/client';
 
-export type CreateUserInput = Omit<User, 'id' | 'passwordHash' | 'createdAt' | 'updatedAt'> & {
+export type CreateUserInput = Omit<User, 'id' | 'passwordHash' | 'createdAt' | 'updatedAt' | 'role'> & {
   password: string;
 };
 

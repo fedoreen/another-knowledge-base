@@ -8,6 +8,7 @@ import {
 } from '@/utils/validation';
 import { AuthRequest, RequiredAuthRequest } from '@/types';
 import { ERROR_MESSAGES, HTTP_STATUS_CODES } from '@/constants/errors';
+import { SUCCESS_MESSAGES } from '@/constants/messages';
 
 export class ArticleController {
   static async createArticle(req: RequiredAuthRequest, res: Response) {
@@ -15,7 +16,7 @@ export class ArticleController {
       const articleData = validateData(createArticleSchema, req.body);
       const article = await ArticleService.createArticle({ ...articleData, authorId: req.user.id }, req.user.id);
       
-      return res.status(201).json(ResponseUtils.success(article, 'Article created successfully'));
+      return res.status(201).json(ResponseUtils.success(article, SUCCESS_MESSAGES.ARTICLE_CREATED));
     } catch (error: any) {
       return res.status(400).json(ResponseUtils.error(error.message));
     }
@@ -71,7 +72,7 @@ export class ArticleController {
         req.user.role
       );
       
-      return res.json(ResponseUtils.success(article, 'Article updated successfully'));
+      return res.json(ResponseUtils.success(article, SUCCESS_MESSAGES.ARTICLE_UPDATED));
     } catch (error: any) {
       switch (error.message) {
         case ERROR_MESSAGES.ACCESS_DENIED:
@@ -90,7 +91,7 @@ export class ArticleController {
       
       await ArticleService.deleteArticle(params.id, user);
       
-      return res.json(ResponseUtils.success(null, 'Article deleted successfully'));
+      return res.json(ResponseUtils.success(null, SUCCESS_MESSAGES.ARTICLE_DELETED));
     } catch (error: any) {
       switch (error.message) {
         case ERROR_MESSAGES.ACCESS_DENIED:

@@ -5,6 +5,7 @@ import { validateData } from '@/utils/validation';
 import { createUserSchema, updateUserSchema, loginSchema } from '@/utils/validation';
 import { AuthRequest, User, UserRole } from '@/types';
 import { ERROR_MESSAGES, HTTP_STATUS_CODES } from '@/constants/errors';
+import { SUCCESS_MESSAGES } from '@/constants/messages';
 
 export class UserController {
   static async register(req: Request, res: Response) {
@@ -12,7 +13,7 @@ export class UserController {
       const userData = validateData(createUserSchema, req.body);
       const user = await UserService.createUser(userData);
       
-      return res.status(HTTP_STATUS_CODES.CREATED).json(ResponseUtils.success(user, 'User created successfully'));
+      return res.status(HTTP_STATUS_CODES.CREATED).json(ResponseUtils.success(user, SUCCESS_MESSAGES.USER_CREATED));
     } catch (error: any) {
       return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json(ResponseUtils.error(error.message));
     }
@@ -23,7 +24,7 @@ export class UserController {
       const loginData = validateData(loginSchema, req.body);
       const authResponse = await UserService.login(loginData);
       
-      return res.status(HTTP_STATUS_CODES.OK).json(ResponseUtils.success(authResponse, 'Login successful'));
+      return res.status(HTTP_STATUS_CODES.OK).json(ResponseUtils.success(authResponse, SUCCESS_MESSAGES.LOGIN_SUCCESSFUL));
     } catch (error: any) {
       return res.status(HTTP_STATUS_CODES.UNAUTHORIZED).json(ResponseUtils.error(error.message, HTTP_STATUS_CODES.UNAUTHORIZED));
     }
@@ -73,7 +74,7 @@ export class UserController {
       
       const user = await UserService.updateUser(id, updateData);
       
-      return res.json(ResponseUtils.success(user, 'User updated successfully'));
+      return res.json(ResponseUtils.success(user, SUCCESS_MESSAGES.USER_UPDATED));
     } catch (error: any) {
       return res.status(400).json(ResponseUtils.error(error.message));
     }
@@ -87,7 +88,7 @@ export class UserController {
       
       await UserService.deleteUser(req.params.id);
       
-      return res.json(ResponseUtils.success(null, 'User deleted successfully'));
+      return res.json(ResponseUtils.success(null, SUCCESS_MESSAGES.USER_DELETED));
     } catch (error: any) {
       return res.status(400).json(ResponseUtils.error(error.message));
     }

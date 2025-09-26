@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { startServer } from './app';
+import { SUCCESS_MESSAGES } from '@/constants/messages';
 
 const prisma = new PrismaClient();
 
@@ -7,7 +8,7 @@ async function main() {
   try {
     // Test database connection
     await prisma.$connect();
-    console.log('Database connected successfully');
+    console.log(SUCCESS_MESSAGES.DATABASE_CONNECTED);
     
     // Start the server
     startServer();
